@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kembara Ketaksamaan Linear - Matematik Tingkatan 1</title>
+<style>
+:root{--navy:#12385b;--blue:#087eb5;--gold:#ffd34e;--cream:#fff4d7;--green:#28a85a;--red:#d94b4b}
+*{box-sizing:border-box} body{margin:0;font-family:Trebuchet MS,Arial,sans-serif;color:#17324b;background:#061f3b;min-height:100vh;overflow-x:hidden}
+#app{min-height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#4dc6ef 0%,#b9edff 35%,#087ba6 36%,#045078 100%)}
+.sky{position:absolute;inset:0 0 35% 0;background:linear-gradient(#42b8ed,#c5f2ff);pointer-events:none}
+.sun{position:absolute;right:8%;top:5%;width:78px;height:78px;border-radius:50%;background:#ffe879;box-shadow:0 0 45px #fff6a5}
+.cloud{position:absolute;background:#fff;border-radius:60px;width:130px;height:34px;opacity:.8;filter:drop-shadow(0 5px 2px #9bd8ee);animation:cloud 35s linear infinite}
+.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%;bottom:8px}.cloud:before{width:55px;height:55px;left:20px}.cloud:after{width:70px;height:65px;left:55px}
+.c1{top:13%;left:-150px}.c2{top:27%;left:-260px;animation-duration:48s;transform:scale(.7)}
+@keyframes cloud{to{left:110%}}
+.sea{position:absolute;inset:36% 0 0;background:repeating-linear-gradient(170deg,transparent 0 35px,rgba(255,255,255,.13) 36px 39px,transparent 40px 70px);pointer-events:none}
+.ship{position:absolute;z-index:2;top:48%;left:-120px;font-size:48px;animation:sail 24s linear infinite;filter:drop-shadow(0 6px 3px #12445b)}
+@keyframes sail{0%{left:-120px;transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(3deg)}100%{left:110%;transform:translateY(0) rotate(-3deg)}}
+.bubble{position:absolute;bottom:-40px;border:2px solid #b9f5ff;border-radius:50%;opacity:.4;animation:rise 9s linear infinite}.b1{left:12%;width:17px;height:17px}.b2{left:76%;width:25px;height:25px;animation-delay:3s}.b3{left:42%;width:12px;height:12px;animation-delay:5s}
+@keyframes rise{to{transform:translateY(-110vh);opacity:0}}
+.screen{position:relative;z-index:3;display:none;min-height:100vh;padding:24px 16px;align-items:center;justify-content:center}.screen.active{display:flex}
+.panel{width:min(950px,96vw);background:linear-gradient(145deg,#fff9e9,#ffe6ad);border:7px solid #9b5a25;border-radius:28px;box-shadow:0 12px 0 #643d24,0 20px 35px #001c35aa;padding:clamp(18px,3vw,34px);position:relative}
+h1,h2,h3{margin:0 0 12px;text-align:center;text-shadow:0 2px #fff;font-weight:1000}h1{font-size:clamp(2rem,6vw,4rem);color:#e65b18;text-shadow:2px 3px #fff,4px 5px #713c1b}h2{font-size:clamp(1.5rem,4vw,2.5rem);color:#8b4319}h3{color:#135b83}
+.subtitle{text-align:center;font-weight:800;font-size:clamp(1rem,2.5vw,1.35rem);margin-bottom:20px;color:#174b6c}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px auto;max-width:650px}.field label{display:block;font-weight:900;margin:0 0 6px}.field input{width:100%;padding:14px;border:3px solid #e6a34b;border-radius:13px;font-size:18px;font-weight:700;background:#fff}
+.btn{border:0;border-radius:16px;padding:13px 22px;font-size:18px;font-weight:1000;cursor:pointer;color:#fff;background:linear-gradient(#36c96b,#14843e);box-shadow:0 5px 0 #07582a,0 8px 12px #3335;transition:.15s}.btn:hover{transform:translateY(-3px);filter:brightness(1.08)}.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #07582a}.btn.orange{background:linear-gradient(#ffbd42,#e77b13);box-shadow:0 5px 0 #984a0c}.btn.blue{background:linear-gradient(#47bdf2,#0874ad);box-shadow:0 5px 0 #064b78}.btn.purple{background:linear-gradient(#b779f4,#7133b9);box-shadow:0 5px 0 #421879}.btn.red{background:linear-gradient(#ff7777,#c72e42);box-shadow:0 5px 0 #811c2b}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.primary{text-align:center;margin-top:18px}.note{text-align:center;font-size:14px;color:#5e492c;font-weight:700}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;background:#123b61;color:white;border:3px solid #ffd45c;border-radius:18px;padding:10px 16px;margin-bottom:16px;font-weight:900}
+.pill{background:#07537c;padding:8px 13px;border-radius:30px;border:2px solid #8de4ff}.mapgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:22px 0}
+.island{min-height:180px;border:4px solid #fff4c4;border-radius:22px;color:#fff;text-shadow:1px 2px #153b46;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 7px 0 #734c25;transition:.2s;padding:10px;background:linear-gradient(160deg,#64cf76,#147c54)}
+.island:nth-child(2){background:linear-gradient(160deg,#75d5ed,#0873a8)}.island:nth-child(3){background:linear-gradient(160deg,#c78df6,#6933a6)}.island:nth-child(4){background:linear-gradient(160deg,#b6e6f7,#2677a5)}.island:nth-child(5){background:linear-gradient(160deg,#ff9cbd,#b12b81)}
+.island:hover{transform:translateY(-7px) rotate(-1deg)}.island.locked{filter:grayscale(.85);opacity:.55;cursor:not-allowed}.island .emoji{font-size:42px}.island strong{font-size:18px}.island small{font-weight:900;margin-top:7px}.island .stars{color:#ffe34e;font-size:18px}
+.mapfooter{text-align:center;font-weight:900;color:#175273}
+.qpanel{max-width:850px}.questionmeta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:12px;font-weight:900;color:#145477}.question{font-size:clamp(1.3rem,3vw,2rem);font-weight:1000;text-align:center;margin:25px 0;line-height:1.4;color:#17334b}.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.answer{border:3px solid #d79a4a;border-radius:15px;background:#fff;padding:15px;text-align:left;font-size:clamp(1rem,2vw,1.25rem);font-weight:900;cursor:pointer;color:#17334b}.answer:hover{background:#e4f7ff;border-color:#1295cb}.answer.selected{background:#d7f0ff;border-color:#087eb5}.answer.correct{background:#d7f9df;border-color:#24a34e}.answer.wrong{background:#ffe0df;border-color:#d94b4b}
+.feedback{display:none;margin:16px 0;padding:15px;border-radius:15px;background:#fff;border:3px dashed #d6a44f;font-weight:800;line-height:1.5}.feedback.show{display:block}.feedback.good{background:#e1ffe8;border-color:#35a85c}.feedback.bad{background:#fff0e8;border-color:#df7b37}
+.qactions{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:18px;flex-wrap:wrap}.progress{height:14px;background:#d5e4e9;border-radius:20px;overflow:hidden;flex:1;min-width:100px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#20c66a,#a5ed50);width:0;transition:.4s}
+.complete{text-align:center}.starsbig{font-size:40px;letter-spacing:5px;margin:12px}.scorebox{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:20px}.scoreitem{background:#fff;border:2px solid #e4b35c;border-radius:16px;padding:15px 25px;min-width:130px;font-weight:900}.scoreitem b{display:block;font-size:30px;color:#087a48}
+.resultgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:620px;margin:18px auto}.resultrow{display:flex;justify-content:space-between;background:#fff;border-radius:12px;padding:12px;font-weight:900}
+.fireworks{position:fixed;inset:0;pointer-events:none;z-index:10;display:none;background:radial-gradient(circle at 15% 25%,transparent 0 35px,#ffdf5a 36px 38px,transparent 40px),radial-gradient(circle at 82% 18%,transparent 0 45px,#ff62c8 46px 48px,transparent 50px),radial-gradient(circle at 70% 75%,transparent 0 40px,#5deaff 41px 43px,transparent 45px);animation:flash .8s infinite alternate}.fireworks.show{display:block}@keyframes flash{from{opacity:.25;transform:scale(.98)}to{opacity:1;transform:scale(1.02)}}
+.confetti{position:fixed;top:-20px;width:10px;height:18px;z-index:11;animation:fall 3.8s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(800deg);opacity:.1}}
+@media(max-width:720px){.mapgrid{grid-template-columns:repeat(2,1fr)}.island{min-height:135px}.formrow,.answers,.resultgrid{grid-template-columns:1fr}.panel{padding:17px}.topbar{font-size:14px}}
+</style>
+</head>
+<body>
+<div id="app">
+ <div class="sky"><div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
+ <div class="sea"></div><div class="ship">⛵</div><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+ <section id="start" class="screen active">
+  <div class="panel">
+   <h1>🧭 KEMBARA<br>KETAKSAMAAN LINEAR</h1>
+   <div class="subtitle">MATEMATIK TINGKATAN 1 · Misi 5 Pulau Misteri</div>
+   <div style="text-align:center;font-size:76px">🏝️ ⛵ 🦜</div>
+   <p style="text-align:center;font-size:19px;font-weight:900">Hai pengembara! Isi nama dan kelas sebelum memulakan misi mencari Harta Karun Ilmu.</p>
+   <div class="formrow">
+    <div class="field"><label for="student">👤 Nama murid</label><input id="student" placeholder="Contoh: Aina" maxlength="40"></div>
+    <div class="field"><label for="class">🏫 Kelas</label><input id="class" placeholder="Contoh: 1 Aktif" maxlength="25"></div>
+   </div>
+   <div class="primary"><button class="btn" onclick="begin()">MULA KEMBARA ➜</button></div>
+   <p class="note">15 soalan · 1 bintang = 2 markah · Jawapan dan jalan kerja dipaparkan selepas semakan</p>
+   <p class="note">Standard Pembelajaran: 7.1.1, 7.1.2, 7.2.1, 7.2.2 dan 7.2.3</p>
+  </div>
+ </section>
+ <section id="map" class="screen">
+  <div class="panel">
+   <div class="topbar"><span>🧭 PETA KEMBARA</span><span id="who" class="pill"></span><span class="pill">⭐ <b id="mapStars">0</b> / 15</span><span class="pill">🏅 <b id="mapScore">0</b> / 30</span></div>
+   <h2>Pilih satu pulau untuk menjawab soalan!</h2>
+   <div class="mapgrid" id="islands"></div>
+   <div class="mapfooter">🚢 Kapal sedang belayar! Selesaikan misi setiap pulau untuk membuka pulau seterusnya.</div>
+  </div>
+ </section>
+ <section id="quiz" class="screen">
+  <div class="panel qpanel">
+   <div class="topbar"><span id="islandTitle">🏝️ Pulau</span><span>⭐ <b id="stars">0</b></span><span>🏅 <b id="score">0</b></span></div>
+   <div class="questionmeta"><span id="level"></span><span id="qcount"></span></div>
+   <div class="progress"><span id="bar"></span></div>
+   <div id="question" class="question"></div>
+   <div id="answers" class="answers"></div>
+   <div id="feedback" class="feedback"></div>
+   <div class="qactions">
+    <button class="btn blue" onclick="backMap()">↩ Kembali ke Peta</button>
+    <span class="note">Jawapan betul: +1 ⭐ dan +2 markah</span>
+    <button id="next" class="btn orange" onclick="nextQuestion()" disabled>Seterusnya ➜</button>
+   </div>
+  </div>
+ </section>
+ <section id="islandDone" class="screen">
+  <div class="panel complete">
+   <div style="font-size:70px">🏆</div><h2 id="doneTitle">Pulau Selesai!</h2>
+   <div id="doneStars" class="starsbig">⭐⭐⭐</div>
+   <p id="doneText" style="font-size:20px;font-weight:900"></p>
+   <div class="scorebox"><div class="scoreitem">Markah Pulau<b id="islandPct">0%</b></div><div class="scoreitem">Bintang Diperoleh<b id="islandStarCount">0</b></div><div class="scoreitem">Jumlah Markah<b id="islandMark">0/6</b></div></div>
+   <button class="btn" onclick="backMap()">↩ Kembali ke Peta Pulau</button>
+  </div>
+ </section>
+ <section id="final" class="screen">
+  <div class="panel complete">
+   <div style="font-size:65px">🎆 🏴‍☠️ 🎆</div><h1>TAHNIAH!</h1>
+   <h2>Anda berjaya menamatkan semua misi!</h2>
+   <p id="finalWho" style="font-weight:900;font-size:18px"></p>
+   <div class="scorebox"><div class="scoreitem">Markah Keseluruhan<b id="finalPct">0%</b></div><div class="scoreitem">Bintang Terkumpul<b id="finalStars">0 ⭐</b></div><div class="scoreitem">Markah<b id="finalMarks">0/30</b></div></div>
+   <div class="resultgrid"><div class="resultrow"><span>Soalan betul</span><b id="finalCorrect">0/15</b></div><div class="resultrow"><span>Pencapaian</span><b id="achievement">Pengembara</b></div></div>
+   <p style="font-weight:900">Teruskan usaha! Ilmu ialah harta karun paling berharga. 🌟</p>
+   <button class="btn purple" onclick="restart()">⌂ Kembali ke Mula</button>
+  </div>
+ </section>
+ <div id="fireworks" class="fireworks"></div>
+</div>
+<script>
+const islands=[
+ {name:"Pulau Pertama",emoji:"🌴",level:"Mudah",qs:[
+  {q:"Antara nombor berikut, yang manakah lebih besar daripada 5?",a:["3","−2","8","5"],c:2,why:"8 > 5. Simbol > bermaksud lebih besar daripada.",sp:"7.1.1"},
+  {q:"Pilih ketaksamaan yang betul bagi ayat: x kurang daripada 9.",a:["x > 9","x < 9","x ≥ 9","x ≤ −9"],c:1,why:"Frasa 'kurang daripada' diwakili oleh simbol <. Maka x < 9.",sp:"7.2.1"},
+  {q:"Jika 4 < 7, pernyataan songsang yang betul ialah …",a:["7 < 4","7 > 4","4 > 7","4 = 7"],c:1,why:"Sifat akas: jika a < b, maka b > a. Jadi 7 > 4.",sp:"7.1.2"}
+ ]},
+ {name:"Pulau Kedua",emoji:"🏝️",level:"Mudah",qs:[
+  {q:"Selesaikan ketaksamaan: x + 3 > 8.",a:["x > 11","x < 5","x > 5","x ≥ 5"],c:2,why:"Tolak 3 pada kedua-dua belah: x + 3 > 8 → x > 8 − 3 → x > 5.",sp:"7.2.2"},
+  {q:"Antara nilai berikut, yang manakah memenuhi 2x ≤ 10?",a:["6","7","5","−"],c:2,why:"Bahagi kedua-dua belah dengan 2: x ≤ 5. Nilai 5 memenuhi ketaksamaan.",sp:"7.2.2"},
+  {q:"Umur Amir ialah x tahun. Amir mesti berumur sekurang-kurangnya 13 tahun untuk menyertai kelab. Pilih ketaksamaan yang sesuai.",a:["x < 13","x > 13","x ≤ 13","x ≥ 13"],c:3,why:"'Sekurang-kurangnya 13' bermaksud 13 atau lebih. Maka x ≥ 13.",sp:"7.2.1"}
+ ]},
+ {name:"Pulau Ketiga",emoji:"🌋",level:"Sederhana",qs:[
+  {q:"Selesaikan: 3x − 4 < 11.",a:["x < 5","x > 5","x < 7","x > 7"],c:0,why:"Tambah 4: 3x < 15. Bahagi 3: x < 5.",sp:"7.2.2"},
+  {q:"Diberi −2x > 8. Apakah penyelesaian yang betul?",a:["x > −4","x < −4","x > 4","x < 4"],c:1,why:"Bahagi kedua-dua belah dengan −2. Apabila dibahagi nombor negatif, tanda ketaksamaan diterbalikkan: x < −4.",sp:"7.1.2 / 7.2.2"},
+  {q:"Sebuah van mempunyai kapasiti maksimum 12 orang. Sudah ada 4 orang di dalam van. Jika x orang lagi akan menaiki van, ketaksamaan yang betul ialah …",a:["4 + x < 12","4 + x ≤ 12","4 − x ≤ 12","4x ≤ 12"],c:1,why:"Jumlah penumpang tidak boleh melebihi 12 orang. Maka 4 + x ≤ 12.",sp:"7.2.1"}
+ ]},
+ {name:"Pulau Keempat",emoji:"❄️",level:"Sederhana",qs:[
+  {q:"Selesaikan ketaksamaan: 5 − 2x ≥ 13.",a:["x ≥ −4","x ≤ −4","x ≥ 4","x ≤ 4"],c:1,why:"Tolak 5: −2x ≥ 8. Bahagi −2 dan songsangkan tanda: x ≤ −4.",sp:"7.2.2"},
+  {q:"Harga sebuah buku ialah RMx. Siti mempunyai RM30 dan mahu membeli 2 buah buku yang sama serta masih mempunyai baki sekurang-kurangnya RM6. Pilih ketaksamaan yang betul.",a:["2x ≤ 24","2x ≥ 24","2x < 36","x + 2 ≥ 30"],c:0,why:"Wang dibelanjakan 2x. Baki sekurang-kurangnya RM6: 30 − 2x ≥ 6. Susun semula: 2x ≤ 24.",sp:"7.2.1 / 7.2.2"},
+  {q:"Diberi 2 < x + 1 ≤ 7. Julat nilai x ialah …",a:["1 < x ≤ 6","1 ≤ x < 6","3 < x ≤ 8","x > 1"],c:0,why:"Tolak 1 pada setiap bahagian: 2 − 1 < x ≤ 7 − 1. Maka 1 < x ≤ 6.",sp:"7.2.3"}
+ ]},
+ {name:"Pulau Kelima",emoji:"💎",level:"Sukar",qs:[
+  {q:"Selesaikan ketaksamaan serentak: 2x − 1 > 5 dan x + 2 ≤ 8.",a:["x > 3 dan x ≤ 6","x ≥ 3 dan x < 6","x < 3 dan x ≥ 6","3 < x < 6"],c:0,why:"2x − 1 > 5 → 2x > 6 → x > 3. x + 2 ≤ 8 → x ≤ 6. Gabungan: 3 < x ≤ 6.",sp:"7.2.3"},
+  {q:"Sebuah pusat aktiviti mengenakan bayaran RM8 untuk masuk dan RM3 bagi setiap permainan. Hana mempunyai tidak lebih daripada RM29. Jika x ialah bilangan permainan, bilangan maksimum permainan yang boleh dimainkan ialah …",a:["x ≤ 6","x ≥ 7","x < 6","x ≤ 7"],c:3,why:"8 + 3x ≤ 29 → 3x ≤ 21 → x ≤ 7. Oleh itu bilangan maksimum ialah 7 permainan.",sp:"7.2.1 / 7.2.2"},
+  {q:"Dua syarat diberikan: 3x + 2 ≥ 14 dan 5x − 1 < 24. Apakah julat nilai x?",a:["x ≥ 4 dan x < 5","x > 4 dan x ≤ 5","x ≤ 4 dan x > 5","4 < x < 5"],c:0,why:"3x + 2 ≥ 14 → 3x ≥ 12 → x ≥ 4. 5x − 1 < 24 → 5x < 25 → x < 5. Maka 4 ≤ x < 5.",sp:"7.2.3"}
+ ]}
+];
+let student="",klass="",islandNow=0,qNow=0,selected=-1,checked=false;
+let earned=Array.from({length:5},()=>Array(3).fill(false)),done=Array(5).fill(false),results=Array.from({length:5},()=>Array(3).fill(false));
+const $=id=>document.getElementById(id);
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");window.scrollTo(0,0)}
+function begin(){student=$("student").value.trim();klass=$("class").value.trim();if(!student||!klass){alert("Sila isi nama dan kelas dahulu.");return}$("who").textContent="👤 "+student+" · "+klass;renderMap();show("map")}
+function totals(){let stars=earned.flat().filter(Boolean).length;return{stars,score:stars*2,correct:stars}}
+function renderMap(){let t=totals();$("mapStars").textContent=t.stars;$("mapScore").textContent=t.score;$("islands").innerHTML=islands.map((p,i)=>`<button class="island ${i>0&&!done[i-1]?"locked":""}" ${i>0&&!done[i-1]?"disabled":""} onclick="openIsland(${i})"><span class="emoji">${p.emoji}</span><strong>${p.name}</strong><small>${p.level}</small><span class="stars">${"★".repeat(earned[i].filter(Boolean).length)}${"☆".repeat(3-earned[i].filter(Boolean).length)}</span><small>${done[i]?"SELESAI":"MULA MISI"} · ${earned[i].filter(Boolean).length}/3 ⭐</small></button>`).join("")}
+function openIsland(i){if(i>0&&!done[i-1])return;islandNow=i;qNow=0;showQuestion()}
+function showQuestion(){selected=-1;checked=false;let p=islands[islandNow],q=p.qs[qNow];$("islandTitle").textContent=p.emoji+" "+p.name;$("stars").textContent=totals().stars;$("score").textContent=totals().score;$("level").textContent="TAHAP "+p.level.toUpperCase()+" · STANDARD "+q.sp;$("qcount").textContent=`Soalan ${qNow+1} / 3`;$("bar").style.width=((qNow+1)/3*100)+"%";$("question").textContent=q.q;$("answers").innerHTML=q.a.map((a,i)=>`<button class="answer" onclick="choose(${i})">${String.fromCharCode(65+i)}. ${a}</button>`).join("");$("feedback").className="feedback";$("feedback").innerHTML="";$("next").disabled=true;$("next").textContent=qNow===2?"Selesai & Kembali ke Peta ➜":"Seterusnya ➜";show("quiz")}
+function choose(i){if(checked)return;selected=i;document.querySelectorAll(".answer").forEach((b,n)=>b.classList.toggle("selected",n===i));checkAnswer()}
+function checkAnswer(){if(selected<0)return;checked=true;let q=islands[islandNow].qs[qNow],good=selected===q.c;if(good){earned[islandNow][qNow]=true;results[islandNow][qNow]=true}else results[islandNow][qNow]=false;document.querySelectorAll(".answer").forEach((b,n)=>{b.disabled=true;if(n===q.c)b.classList.add("correct");else if(n===selected)b.classList.add("wrong")});let fb=$("feedback");fb.className="feedback show "+(good?"good":"bad");fb.innerHTML=(good?"🎉 <b>Jawapan Betul! +1 ⭐ +2 markah</b>":"💡 <b>Belum tepat. Jangan putus asa!</b>")+"<br>Jawapan: <b>"+String.fromCharCode(65+q.c)+". "+q.a[q.c]+"</b><br><br><b>Jalan kerja / Penerangan:</b> "+q.why;$("next").disabled=false;$("stars").textContent=totals().stars;$("score").textContent=totals().score}
+function nextQuestion(){if(!checked)return;if(qNow<2){qNow++;showQuestion()}else{done[islandNow]=true;let n=earned[islandNow].filter(Boolean).length;$("doneTitle").textContent=islands[islandNow].name+" Selesai!";$("doneStars").textContent="⭐".repeat(n)+"☆".repeat(3-n);$("doneText").textContent=`Anda menjawab ${n} daripada 3 soalan dengan betul.`;$("islandPct").textContent=Math.round(n/3*100)+"%";$("islandStarCount").textContent=n+" ⭐";$("islandMark").textContent=(n*2)+"/6";show("islandDone");if(islandNow===4){setTimeout(showFinal,900)}}}
+function backMap(){renderMap();show("map")}
+function showFinal(){let t=totals();$("finalWho").textContent="Pengembara: "+student+" · Kelas "+klass;$("finalPct").textContent=Math.round(t.score/30*100)+"%";$("finalStars").textContent=t.stars+" ⭐";$("finalMarks").textContent=t.score+"/30";$("finalCorrect").textContent=t.correct+"/15";$("achievement").textContent=t.score>=26?"Pakar Ketaksamaan 🏆":t.score>=20?"Penjelajah Hebat 🌟":t.score>=12?"Pengembara Gigih 🧭":"Terus Berlatih 💪";show("final");$("fireworks").classList.add("show");confetti();setTimeout(()=>$("fireworks").classList.remove("show"),5000)}
+function confetti(){for(let i=0;i<90;i++){let e=document.createElement("i");e.className="confetti";e.style.left=Math.random()*100+"vw";e.style.background=["#ffdb45","#ff5d8f","#42d9ff","#64df83","#b78aff"][i%5];e.style.animationDelay=Math.random()*1.5+"s";e.style.transform=`rotate(${Math.random()*360}deg)`;document.body.appendChild(e);setTimeout(()=>e.remove(),5500)}}
+function restart(){earned=Array.from({length:5},()=>Array(3).fill(false));done=Array(5).fill(false);results=Array.from({length:5},()=>Array(3).fill(false));$("fireworks").classList.remove("show");$("student").value="";$("class").value="";show("start")}
+</script>
+</body></html>
